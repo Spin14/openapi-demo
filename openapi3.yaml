@@ -1,0 +1,192 @@
+openapi: "3.0.0"
+info:
+  version: 0.0.1
+  title: Persons Api
+  description: An example API that deals with persons to try out OpenAPI 3.0 specification
+servers:
+  - url: https://0.0.0.0:8080
+paths:
+  /persons:
+    get:
+      description: |
+        Returns all persons
+      operationId: persons.list_persons
+      parameters:
+        - name: name
+          in: query
+          description: name for partial match filtering
+          required: false
+          style: form
+          schema:
+            type: array
+            items:
+              type: string
+        - name: limit
+          in: query
+          description: maximum number of results to return
+          required: false
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: persons data
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Person"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      description: Creates a person
+      operationId: persons.create_person
+      requestBody:
+        description: PersonModel data
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreatePerson"
+      responses:
+        '200':
+          description: person data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Person"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /persons/{person_id}:
+    get:
+      description: Returns a person based on a unique ID
+      operationId: persons.retrieve_person
+      parameters:
+        - name: person_id
+          in: path
+          description: unique ID of the person
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: person data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Person"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    put:
+      description: Updates and returns a person based on a unique ID
+      operationId: persons.update_person
+      parameters:
+        - name: person_id
+          in: path
+          description: unique ID of the person
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: PersonModel update data
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdatePerson"
+      responses:
+        '200':
+          description: person data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Person"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      description: deletes a person based on the unique ID
+      operationId: persons.delete_person
+      parameters:
+        - name: person_id
+          in: path
+          description: unique ID of person to delete
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: person deleted
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+components:
+  schemas:
+    UpdatePerson:
+      required:
+        - name
+        - age
+      properties:
+        name:
+          type: string
+          nullable: false
+        age:
+          type: integer
+          format: int32
+          nullable: false
+
+    CreatePerson:
+      allOf:
+        - $ref: '#/components/schemas/UpdatePerson'
+      required:
+        - beautiful
+      properties:
+        beautiful:
+          type: boolean
+          nullable: false
+
+
+    Person:
+      allOf:
+        - $ref: '#/components/schemas/CreatePerson'
+      required:
+        - person_id
+      properties:
+        person_id:
+          type: integer
+          format: int64
+          nullable: false
+
+    Error:
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string

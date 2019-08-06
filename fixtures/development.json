@@ -1,0 +1,26 @@
+[
+    {
+        "id": 1,
+        "name": "Catz",
+        "age": 27,
+        "beautiful": true
+    },
+    {
+        "id": 2,
+        "name": "Luis Amarelo",
+        "age": 31,
+        "beautiful": false
+    },
+    {
+        "id": 33,
+        "name": "Chi",
+        "age": 26,
+        "beautiful": true
+    },
+    {
+        "id": 101,
+        "name": "Juan",
+        "age": 47,
+        "beautiful": true
+    }
+]
