@@ -161,6 +161,21 @@ All done! ✨ 🍰 ✨
 x files left unchanged.
 ```
 
+## Open Api docs
+
+Install docs generator:
+
+```
+npm install redoc-cli -g
+```
+
+Generate Docs:
+
+```
+redoc-cli bundle openapi3.yaml
+mv redoc-static.html persons.html
+```
+
 ## Todo
 
 - implement and test endpoints (flask app)
